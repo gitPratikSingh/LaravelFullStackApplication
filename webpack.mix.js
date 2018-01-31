@@ -1,4 +1,4 @@
-let mix = require('laravel-mix');
+npm installlet mix = require('laravel-mix');
 
 /*
  |--------------------------------------------------------------------------
