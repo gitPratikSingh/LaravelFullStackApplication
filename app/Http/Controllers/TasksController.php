@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Task;
+use DB;
 
-class TestController extends Controller
+class TasksController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +15,13 @@ class TestController extends Controller
      */
     public function index()
     {
-        echo "<br>Test Controller.";
+        $testdb = DB::table('tasks')->get();
+        
+        // eloquent ORM for laravel.. using a model class to build queries
+        $testdb = Task::all();
+
+        return view('TestView', ['name'=>'pratik', 'testarray' => $testdb]);
+        
     }
 
     /**
@@ -45,7 +53,10 @@ class TestController extends Controller
      */
     public function show($id)
     {
-        //
+        $tasks = DB::table('tasks')->find($id);
+        $tasks = Task::find($id);
+
+        return view('tasks.show', compact('tasks'));
     }
 
     /**

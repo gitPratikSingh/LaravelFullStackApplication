@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    //return view('welcome'); 
-    return "Hello Worlds";
-});
+Route::get('/', 'PostsController@index');
+Route::get('tasks', 'TasksController@index');
+Route::get('tasks/{taskid}', 'TasksController@show');
+
