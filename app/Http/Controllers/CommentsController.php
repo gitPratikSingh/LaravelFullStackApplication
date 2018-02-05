@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use App\Comments;
 
-class BlogsController extends Controller
+class CommentsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,7 @@ class BlogsController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->get();
-        return view("blogs.index", compact('posts'));
+        //
     }
 
     /**
@@ -25,7 +25,7 @@ class BlogsController extends Controller
      */
     public function create()
     {
-        return view("blogs.create");
+        //
     }
 
     /**
@@ -34,23 +34,19 @@ class BlogsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Post $postid)
     {
+/*
+        $comment = new Comments;
+        $comment->body = request()->body;
+        $comment->post_id = $postid->id;
 
-        $this->validate(request(), [
+        $comment->save();
+*/
 
-            'title' => 'required|min:2|max:20',
-            'body' => 'required'
-        ]);
+        $postid->addComment(request()->body);
 
-        $post = new Post;
-        $post->title =  $request->title;
-        $post->body =  $request->body;
-
-        $post->save();
-
-        return redirect('/blog');
-
+        return back();
     }
 
     /**
@@ -61,8 +57,7 @@ class BlogsController extends Controller
      */
     public function show($id)
     {
-        $post = Post::find($id);
-        return view('posts.show', compact('post'));
+        //
     }
 
     /**
@@ -73,7 +68,7 @@ class BlogsController extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**

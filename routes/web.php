@@ -13,8 +13,10 @@
 
 Route::get('/', 'PostsController@index');
 Route::get('/posts/create', 'BlogsController@create');
-Route::get('/posts/{post}', 'BlogsController@show');
-Route::get('/', 'PostsController@index');
+Route::post('/post', 'BlogsController@store');
+Route::get('/posts/{postid}', 'BlogsController@show');
+Route::post('/posts/{postid}/comment', 'CommentsController@store');
+
 
 Route::get('tasks', 'TasksController@index');
 Route::get('tasks/{taskid}', 'TasksController@show');
