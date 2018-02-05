@@ -12,6 +12,12 @@
 */
 
 Route::get('/', 'PostsController@index');
+Route::get('/posts/create', 'BlogsController@create');
+Route::get('/posts/{post}', 'BlogsController@show');
+Route::get('/', 'PostsController@index');
+
 Route::get('tasks', 'TasksController@index');
 Route::get('tasks/{taskid}', 'TasksController@show');
+Route::get('/blog', 'BlogsController@index');
+
 

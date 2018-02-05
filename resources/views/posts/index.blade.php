@@ -161,6 +161,3 @@
 
     </main>
 @endsection
-
-@section('footer')
-@endsection
