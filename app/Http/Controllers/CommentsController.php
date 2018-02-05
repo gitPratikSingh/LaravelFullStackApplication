@@ -43,6 +43,7 @@ class CommentsController extends Controller
 
         $comment->save();
 */
+        $this->validate(request(), ['body'=>'required|min:2']);
 
         $postid->addComment(request()->body);
 
