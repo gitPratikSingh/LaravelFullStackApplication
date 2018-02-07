@@ -18,7 +18,7 @@
 
             <div class="form-group">
                 <label for="body">Body</label>
-                <input type="text" class="form-control" id="body" name="body" required>
+                <input type="textarea" class="form-control" id="body" name="body" required>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Publish</button>

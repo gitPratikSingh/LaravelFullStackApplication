@@ -3,14 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 
-class Comments extends Controller
+class RegistrationController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(){
+        $this->middleware('guest');
+    } 
+
     public function index()
     {
         //
@@ -23,7 +29,7 @@ class Comments extends Controller
      */
     public function create()
     {
-        //
+        return view('register.create');
     }
 
     /**
@@ -34,7 +40,26 @@ class Comments extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // validate
+        $this->validate(request(), [
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed'
+
+        ]);
+
+        $user = User::create([ 
+            'name' => request('name'),
+            'email' => request('email'),
+            'password' => bcrypt(request('password'))
+            ]);
+
+        // sign in
+        auth()->login($user);
+
+        // redirect
+        return redirect()->home();
+
     }
 
     /**
@@ -45,7 +70,7 @@ class Comments extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**

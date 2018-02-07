@@ -8,7 +8,11 @@
         </h2>
 
 
-        <p class="blog-post-meta">{{ $post->updated_at->toFormattedDateString() }}</p>
+        <p class="blog-post-meta">
+            {{ $post->user->name }} on
+            {{ $post->updated_at->toFormattedDateString() }}
+        
+        </p>
 
         {{ $post->body }}
 </div><!-- /.blog-post -->

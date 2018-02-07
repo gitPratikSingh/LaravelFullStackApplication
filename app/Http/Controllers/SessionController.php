@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Post;
 
-class BlogsController extends Controller
+class SessionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,21 +12,14 @@ class BlogsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct(){
 
-        $this->middleware('auth')->except(['index', 'show']);
-    }
+    public function __construct(){
+        $this->middleware('guest')->except(['destroy']);
+    } 
 
     public function index()
     {
-
-        $archives = Post::selectRaw('year(created_at) year, monthname(created_at) month, count(*) published')
-        ->groupBy('year', 'month')
-        ->get()
-        ->toArray();
-
-        $posts = Post::orderBy('created_at', 'desc')->get();
-        return view("blogs.index", compact('posts', 'archives'));
+        //
     }
 
     /**
@@ -37,7 +29,7 @@ class BlogsController extends Controller
      */
     public function create()
     {
-        return view("blogs.create");
+        return view('sessions.create');
     }
 
     /**
@@ -46,23 +38,19 @@ class BlogsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
+        // autheticate
+        if(! auth()->attempt(request(['email', 'password']))){
+            return back()->withErrors([
 
-        $this->validate(request(), [
+                'message' => 'Credentials do not match'
+            ]);
+        }
+        // if yes then sign them in and redirect to home page
 
-            'title' => 'required|min:2|max:20',
-            'body' => 'required'
-        ]);
-
-        $post = new Post;
-        $post->title =  $request->title;
-        $post->body =  $request->body;
-        $post->user_id = auth()->user()->id;
-        $post->save();
-
+        // else redirect back
         return redirect('/blog');
-
     }
 
     /**
@@ -73,8 +61,7 @@ class BlogsController extends Controller
      */
     public function show($id)
     {
-        $post = Post::find($id);
-        return view('posts.show', compact('post'));
+        //
     }
 
     /**
@@ -85,7 +72,7 @@ class BlogsController extends Controller
      */
     public function edit($id)
     {
-        
+        //
     }
 
     /**
@@ -106,8 +93,10 @@ class BlogsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy()
     {
-        //
+        auth()->logout();
+        return redirect('/blog');
+
     }
 }

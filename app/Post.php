@@ -17,8 +17,16 @@ class Post extends Model
         $comment = new Comments;
         $comment->body = $body;
         $comment->post_id = $this->id;
+        $comment->user_id = $this->user_id;
 
         $comment->save();
 
-    } 
+    }
+
+    public function user(){
+        
+        return $this->belongsTo(User::class, 'user_id');
+
+    }
+
 }
