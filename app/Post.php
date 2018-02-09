@@ -29,4 +29,19 @@ class Post extends Model
 
     }
 
+    public function tags(){
+        
+        return $this->belongsToMany(Tags::class);
+
+    }
+
+
+    public static function getArchives(){
+        return static::selectRaw('year(created_at) year, monthname(created_at) month, count(*) published')
+        ->groupBy('year', 'month')
+        ->orderByRaw('min(created_at) desc')
+        ->get()
+        ->toArray();
+    }
+
 }

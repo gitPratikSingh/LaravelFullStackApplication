@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use Carbon\Carbon;
+use App\Repositories\Posts;
 
 class BlogsController extends Controller
 {
@@ -18,15 +20,16 @@ class BlogsController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    public function index()
+    public function index(Posts $posts)
     {
+        $posts = Post::orderBy('created_at', 'desc');
 
-        $archives = Post::selectRaw('year(created_at) year, monthname(created_at) month, count(*) published')
-        ->groupBy('year', 'month')
-        ->get()
-        ->toArray();
+        if($month = request('month')){
+            $posts->whereMonth('created_at', Carbon::parse($month)->month);
+        }
 
-        $posts = Post::orderBy('created_at', 'desc')->get();
+        $posts = $posts->get();
+        
         return view("blogs.index", compact('posts', 'archives'));
     }
 
@@ -60,6 +63,8 @@ class BlogsController extends Controller
         $post->body =  $request->body;
         $post->user_id = auth()->user()->id;
         $post->save();
+
+        session()->flash('message', 'Your post has been published!');
 
         return redirect('/blog');
 

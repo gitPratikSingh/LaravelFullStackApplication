@@ -56,7 +56,10 @@ class RegistrationController extends Controller
 
         // sign in
         auth()->login($user);
-
+        
+        // flash a message to the user
+        session()->flash('message','This is a flash message');
+        
         // redirect
         return redirect()->home();
 

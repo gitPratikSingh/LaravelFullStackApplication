@@ -13,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
+        view()->composer('blogs.layouts.sidebar', function($view){
+            $view->with('archives', \App\Post::getArchives());
+        });
     }
 
     /**
